@@ -5,7 +5,7 @@ clear,clc
 % yours matlab code need put on here
 handdata_path = 'D:\YJ\MyDatasets\Hand\hand_dataset';
 cd(handdata_path)
-
+% yours export path
 export_path = 'D:\YJ\MyDatasets\VOC\vgg_hands_data';
 jpegimages_path = fullfile(export_path,'JPEGImages');
 annotations_path = fullfile(export_path,'Annotations');
@@ -13,7 +13,10 @@ ImageSets_Main_path = fullfile(export_path,'ImageSets','Main');
 [~,~,~] = mkdir(jpegimages_path);
 [~,~,~] = mkdir(annotations_path);
 [~,~,~] = mkdir(ImageSets_Main_path);
-
+% Only allow to export area of hand bigger than the threshold
+area_threshold = 1500 ;
+% Only allow to export area of hand bigger than the threshold
+show_debug_image = false ;
 % move to 'your path + \hand_dataset' for **dir() function**
 % we can use '*' to get all dataset image filepath
 % e.g. '*/*/images/*.jpg'
@@ -21,14 +24,16 @@ ImageSets_Main_path = fullfile(export_path,'ImageSets','Main');
 %    second '*' : can find {training_data,validation_data,test_data}
 %    third '*'  : can find all JPEG file
 uf = dir('*/*/images/*.jpg');
+% initial counter
 name_id = 1;
 countBig = 0;
 countImg = 0;
 countErr = 0;
-
+% for record the list of set
 train_set = {};  train_cnt = 1;
 valid_set = {};  valid_cnt = 1;
 test_set = {};  test_cnt = 1;
+% begin create voc dataset
 for i = 1:length(uf)
     flag = 0;
     % get target file folder and name
@@ -57,7 +62,7 @@ for i = 1:length(uf)
         ymax = floor(max(box_y)); ymax = floor(min([ymax,get_size(1)]));
         
         area = (xmax-xmin+1)*(ymax-ymin+1);
-        if(area > 1500)
+        if(area > area_threshold)
             flag = 1;
             get_bboxs(j,:) = [xmin ymin xmax ymax];
             bounding_boxes(j,:) = [xmin ymin xmax-xmin ymax-ymin];
@@ -84,12 +89,14 @@ for i = 1:length(uf)
         name_id = name_id + 1;
         
         %%% inspect data is correct or not %%%
-%         figure(1),imshow(get_image);
-%         imshow(insertShape(get_image, ...
-%             'Rectangle', bounding_boxes, ...
-%             'Color', 'red', ...
-%             'LineWidth', 5));
-%         disp('Press any key to move onto the next image');pause;
+        if show_debug_image
+            figure(1),imshow(get_image);
+            imshow(insertShape(get_image, ...
+                'Rectangle', bounding_boxes, ...
+                'Color', 'red', ...
+                'LineWidth', 5));
+            disp('Press any key to move onto the next image');pause;
+        end
     
         countImg = countImg + 1;
     else
@@ -98,17 +105,16 @@ for i = 1:length(uf)
     end
 end
 
+% save ImageSets
 writetable(table( train_set' ), ...
 	fullfile(ImageSets_Main_path,'train.txt') , ...
 	'WriteVariableNames',0)
-    
 writetable(table( valid_set' ), ...
 	fullfile(ImageSets_Main_path,'val.txt') , ...
 	'WriteVariableNames',0)
-    
 writetable(table( test_set' ), ...
 	fullfile(ImageSets_Main_path,'test.txt') , ...
 	'WriteVariableNames',0)
-
-fprintf('\n\n   count Big: %d\n   count Img: %d   count Err: %d\n', ...
-                countBig,         countImg,       countErr);
+% show counter
+fprintf('\n\n   count Big: %d\n   count Img: %d\n   count Err: %d\n', ...
+                countBig,          countImg,          countErr);
