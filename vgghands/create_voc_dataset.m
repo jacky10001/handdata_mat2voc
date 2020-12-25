@@ -2,8 +2,16 @@
 % URL https://www.robots.ox.ac.uk/~vgg/data/hands/
 % (box.a  box.b  box.c  box.d) four point is (Y,X) 
 clear,clc
+handdata_path = 'D:\YJ\MyDatasets\Hand\hand_dataset';
+cd(handdata_path)
 
 export_path = 'D:\YJ\MyDatasets\VOC\vgg_hands_data';
+jpegimages_path = fullfile(export_path,'JPEGImages');
+annotations_path = fullfile(export_path,'Annotations');
+ImageSets_Main_path = fullfile(export_path,'ImageSets','Main');
+[~,~,~] = mkdir(jpegimages_path);
+[~,~,~] = mkdir(annotations_path);
+[~,~,~] = mkdir(ImageSets_Main_path);
 
 % move to 'your path + \hand_dataset' for **dir() function**
 % we can use '*' to get all dataset image filepath
@@ -12,9 +20,13 @@ export_path = 'D:\YJ\MyDatasets\VOC\vgg_hands_data';
 %    second '*' : can find {training_data,validation_data,test_data}
 %    third '*'  : can find all JPEG file
 uf = dir('*/*/images/*.jpg');
-name_id = 0;
+name_id = 1;
 countBig = 0;
 countImg = 0;
+
+train_set = {};  train_cnt = 1;
+valid_set = {};  valid_cnt = 1;
+test_set = {};  test_cnt = 1;
 for i = 1:length(uf)
     flag = 0;
     % get target file folder and name
@@ -33,11 +45,14 @@ for i = 1:length(uf)
     % get image data property
     set_type = '';
     if contains(get_folder,'train')
-        set_type = 'train';
+        train_set{train_cnt} = name_id ;
+        train_cnt = train_cnt + 1;
     elseif contains(get_folder,'validation')
-        set_type = 'val';
+        valid_set{valid_cnt} = name_id ;
+        valid_cnt = valid_cnt + 1;
     elseif contains(get_folder,'test')
-        set_type = 'test';
+        test_set{test_cnt} = name_id ;
+        test_cnt = test_cnt + 1;
     end
     
     get_bboxs = [];
@@ -61,7 +76,8 @@ for i = 1:length(uf)
     end
     
     if(flag == 1)
-        cvt_voc_data(export_path,name_id,get_folder,get_name,get_size,get_bboxs,get_image)
+        cvt_voc_data(annotations_path,jpegimages_path,name_id,...
+                     get_folder,get_name,get_size,get_bboxs,get_image)
         fprintf([num2str(name_id,'%05d') ' \n'])
         name_id = name_id + 1;
         
@@ -78,4 +94,17 @@ for i = 1:length(uf)
         disp('No big hand, skip the data');
     end
 end
+
+writetable(table( train_set' ), ...
+	fullfile(ImageSets_Main_path,'train.txt') , ...
+	'WriteVariableNames',0)
+    
+writetable(table( valid_set' ), ...
+	fullfile(ImageSets_Main_path,'val.txt') , ...
+	'WriteVariableNames',0)
+    
+writetable(table( test_set' ), ...
+	fullfile(ImageSets_Main_path,'test.txt') , ...
+	'WriteVariableNames',0)
+
 fprintf('\n\n   count Big: %d\n   count Img: %d\n',countBig,countImg);

@@ -1,14 +1,10 @@
-function cvt_voc_data(export_path,name_id,get_folder,get_name,get_size,get_bboxs,get_image)
+function cvt_voc_data(annotations_path,jpegimages_path,name_id,get_folder,get_name,get_size,get_bboxs,get_image)
 %----- init -----%
 name_id = sprintf('%05d', name_id);
 %------------------------------------------------------------------
-dataset_annotations = fullfile(export_path,'Annotations');
-[~,~,~] = mkdir(dataset_annotations);
-xml_filename = fullfile(dataset_annotations,[name_id,'.xml']);
+xml_filename = fullfile(annotations_path,[name_id,'.xml']);
 %------------------------------------------------------------------
-dataset_jpegimages = fullfile(export_path,'JPEGImages');
-[~,~,~] = mkdir(dataset_jpegimages);
-jpg_filename = fullfile(dataset_jpegimages,[name_id,'.jpg']);
+jpg_filename = fullfile(jpegimages_path,[name_id,'.jpg']);
 %------------------------------------------------------------------
 get_size = [get_size(2),get_size(1),get_size(3)];
 
