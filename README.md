@@ -1,8 +1,9 @@
 # Hand dataset convert MAT file to XML file (VOC format)
 
-## VGG hands dataset
+## VGG Hands dataset
 The number of big hand: 6813  
-The number of Image: 3942 
+The number of Image: 3942  
+The number of skip: 1686  
 ```
 Your path + hand_dataset  (here need put on convert code)
 ├─test_dataset  
@@ -21,7 +22,8 @@ Your path + hand_dataset  (here need put on convert code)
 
 ## Ego Hands dataset
 The number of hand: 15053  
-The number of Image: 4800  
+The number of Image: 4787  
+The number of skip: 13  
 ```
 your path + egohands_data  (here need put on convert code)
 └─_LABELLED_SAMPLES
