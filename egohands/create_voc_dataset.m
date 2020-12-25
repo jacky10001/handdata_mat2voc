@@ -16,6 +16,8 @@ ImageSets_Main_path = fullfile(export_path,'ImageSets','Main');
 [~,~,~] = mkdir(ImageSets_Main_path);
 
 name_id = 1;
+countHand = 0;
+countImg = 0;
 MainSplit = {'TRAIN','VALID','TEST'};
 for ll = 1:length(MainSplit)
     vid = getMetaBy('MainSplit', MainSplit{ll});
@@ -35,10 +37,14 @@ for ll = 1:length(MainSplit)
 
         bounding_boxes = getBoundingBoxes(get_target, jj);
         get_bboxs = bounding_boxes;
+        box_cnt = 4;  % one frame have four hands at the most
         if ~isempty(find(get_bboxs==0, 1))
             get_bboxs(get_bboxs==0) = [];
-            get_bboxs = reshape(get_bboxs, [length(get_bboxs)/4,4]);
+            box_cnt = length(get_bboxs)/4;
+            get_bboxs = reshape(get_bboxs, [box_cnt,4]);
         end
+        countHand = countHand + box_cnt;
+        
         cvt_voc_data(annotations_path,jpegimages_path,name_id,...
                      get_folder,get_name,get_size,get_bboxs,get_image)
         fprintf([num2str(name_id,'%05d') ' \n'])
@@ -53,6 +59,8 @@ for ll = 1:length(MainSplit)
 %             'Color', {'blue', 'yellow', 'red', 'green'}, ...
 %             'LineWidth', 10));
 %             disp('Press any key to move onto the next image');pause;
+            
+        countImg = countImg + 1;
     end
     end
     
@@ -60,3 +68,4 @@ for ll = 1:length(MainSplit)
         fullfile(ImageSets_Main_path,[lower(MainSplit{ll}),'.txt']) , ...
         'WriteVariableNames',0)
 end
+fprintf('\n\n   count Hand: %d\n   count Img: %d\n',countHand,countImg);
