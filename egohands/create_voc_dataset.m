@@ -42,10 +42,11 @@ for ll = 1:length(MainSplit)
         bounding_boxes = getBoundingBoxes(get_target, jj);
         get_bboxs = bounding_boxes;
         box_cnt = 4;  % one frame have four hands at the most
+        % remove 0 bbox
         if ~isempty(find(get_bboxs==0, 1))
-            get_bboxs(get_bboxs==0) = [];
-            box_cnt = length(get_bboxs)/4;
-            get_bboxs = reshape(get_bboxs, [box_cnt,4]);
+            get_bboxs(get_bboxs==0) = []; % remove 0 element (1 dim)
+            box_cnt = length(get_bboxs)/4; % calculate number
+            get_bboxs = reshape(get_bboxs, [box_cnt,4]); % reshape 2 dims
         end
         countHand = countHand + box_cnt;
         % Inspect the number of box is bigger than 0

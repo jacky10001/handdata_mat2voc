@@ -69,8 +69,19 @@ for i = 1:length(uf)
             countBig = countBig + 1;
         end
     end
-    
-    if(flag == 1)
+    % remove 0 bbox
+    if ~isempty(find(get_bboxs==0, 1))
+        get_bboxs(get_bboxs==0) = [];% remove 0 element (1 dim)
+        box_cnt = length(get_bboxs)/4; % calculate number
+        get_bboxs = reshape(get_bboxs, [box_cnt,4]); % reshape 2 dims
+    end
+    if ~isempty(find(bounding_boxes==0, 1))
+        bounding_boxes(bounding_boxes==0) = [];% remove 0 element (1 dim)
+        box_cnt = length(bounding_boxes)/4; % calculate number
+        bounding_boxes = reshape(bounding_boxes, [box_cnt,4]); % reshape 2 dims
+    end
+    % if image have big hand, it will convert voc data
+    if flag == 1
         cvt_voc_data(annotations_path,jpegimages_path,name_id,...
                      get_folder,get_name,get_size,get_bboxs,get_image)
         fprintf([num2str(name_id,'%05d') ' \n'])
