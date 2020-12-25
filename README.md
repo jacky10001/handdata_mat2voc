@@ -19,7 +19,7 @@ Your path + hand_dataset  (here need put on convert code)
         └─images  
 ```
 
-## VGG hands dataset
+## Ego Hands dataset
 The number of hand: 15053  
 The number of Image: 4800  
 ```
