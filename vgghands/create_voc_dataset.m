@@ -1,6 +1,6 @@
 % VGG Hand Dataset
 % URL https://www.robots.ox.ac.uk/~vgg/data/hands/
-% box.a  box.b  box.c  box.d(1) --> (Y,X)
+% (box.a  box.b  box.c  box.d) four point is (Y,X) 
 clear,clc
 
 export_path = 'D:\YJ\MyDatasets\VOC\vgg_hands_data';

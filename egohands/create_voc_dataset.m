@@ -1,5 +1,9 @@
+% EgoHands: A Dataset for Hands in Complex Egocentric Interactions 
+% URL http://vision.soic.indiana.edu/projects/egohands/
+% bounding_boxes is (xmin,ymin,width,height)
+% get_bboxs (xmin,ymin,xmax,ymax)
 clear,clc
-%%
+
 export_path = 'D:\YJ\MyDatasets\VOC\egohands_data';
 
 name_id = 1;

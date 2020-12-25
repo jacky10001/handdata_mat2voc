@@ -1,8 +1,4 @@
 function cvt_voc_data(export_path,name_id,get_folder,get_name,get_size,get_bboxs,get_image)
-% change hand data to voc format
-% dataset from VGG Hand Dataset
-% URL https://www.robots.ox.ac.uk/~vgg/data/hands/
-
 %----- init -----%
 name_id = sprintf('%05d', name_id);
 %------------------------------------------------------------------
