@@ -42,18 +42,6 @@ for i = 1:length(uf)
     get_image = imread( fullfile(get_folder,'images',[name,'.jpg']) );
     load( fullfile(get_folder,'annotations',[name,'.mat']) );
     get_size = size(get_image);
-    % get image data property
-    set_type = '';
-    if contains(get_folder,'train')
-        train_set{train_cnt} = name_id ;
-        train_cnt = train_cnt + 1;
-    elseif contains(get_folder,'validation')
-        valid_set{valid_cnt} = name_id ;
-        valid_cnt = valid_cnt + 1;
-    elseif contains(get_folder,'test')
-        test_set{test_cnt} = name_id ;
-        test_cnt = test_cnt + 1;
-    end
     
     get_bboxs = [];
     bounding_boxes = [];
@@ -79,6 +67,18 @@ for i = 1:length(uf)
         cvt_voc_data(annotations_path,jpegimages_path,name_id,...
                      get_folder,get_name,get_size,get_bboxs,get_image)
         fprintf([num2str(name_id,'%05d') ' \n'])
+        % get image set property
+        set_type = '';
+        if contains(get_folder,'train')
+            train_set{train_cnt} = name_id ;
+            train_cnt = train_cnt + 1;
+        elseif contains(get_folder,'validation')
+            valid_set{valid_cnt} = name_id ;
+            valid_cnt = valid_cnt + 1;
+        elseif contains(get_folder,'test')
+            test_set{test_cnt} = name_id ;
+            test_cnt = test_cnt + 1;
+        end
         name_id = name_id + 1;
         
         %%% inspect data is correct or not %%%
