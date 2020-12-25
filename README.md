@@ -2,7 +2,7 @@
 
 ## VGG Hands dataset
 The number of big hand: 6813  
-The number of Image: 3942 
+The number of Image: 3942  
 The number of skip: 1686  
 ```
 Your path + hand_dataset  (here need put on convert code)
