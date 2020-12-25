@@ -24,6 +24,7 @@ uf = dir('*/*/images/*.jpg');
 name_id = 1;
 countBig = 0;
 countImg = 0;
+countErr = 0;
 
 train_set = {};  train_cnt = 1;
 valid_set = {};  valid_cnt = 1;
@@ -93,6 +94,7 @@ for i = 1:length(uf)
         countImg = countImg + 1;
     else
         disp('No big hand, skip the data');
+        countErr = countErr + 1;
     end
 end
 
@@ -108,4 +110,5 @@ writetable(table( test_set' ), ...
 	fullfile(ImageSets_Main_path,'test.txt') , ...
 	'WriteVariableNames',0)
 
-fprintf('\n\n   count Big: %d\n   count Img: %d\n',countBig,countImg);
+fprintf('\n\n   count Big: %d\n   count Img: %d   count Err: %d\n', ...
+                countBig,         countImg,       countErr);
