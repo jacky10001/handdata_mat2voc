@@ -2,6 +2,7 @@
 % URL https://www.robots.ox.ac.uk/~vgg/data/hands/
 % (box.a  box.b  box.c  box.d) four point is (Y,X) 
 clear,clc
+% yours matlab code need put on here
 handdata_path = 'D:\YJ\MyDatasets\Hand\hand_dataset';
 cd(handdata_path)
 

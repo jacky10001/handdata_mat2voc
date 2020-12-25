@@ -17,7 +17,7 @@ annotation = docNode.getDocumentElement;
     annotation.appendChild(folderNode);
 
     filenameNode = docNode.createElement('filename');
-    filenameNode.appendChild(docNode.createTextNode(name_id));
+    filenameNode.appendChild(docNode.createTextNode([name_id,'.jpg']));
     annotation.appendChild(filenameNode);
 
     sourceNode = docNode.createElement('source');

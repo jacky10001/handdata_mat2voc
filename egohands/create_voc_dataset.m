@@ -3,6 +3,7 @@
 % bounding_boxes is (xmin,ymin,width,height)
 % get_bboxs (xmin,ymin,xmax,ymax)
 clear,clc
+% yours matlab code need put on here
 handdata_path = 'D:\YJ\MyDatasets\Hand\egohands_data';
 cd(handdata_path)
 
