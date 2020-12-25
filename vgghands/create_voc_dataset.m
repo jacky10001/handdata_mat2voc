@@ -71,13 +71,13 @@ for i = 1:length(uf)
         % get image set property
         set_type = '';
         if contains(get_folder,'train')
-            train_set{train_cnt} = name_id ;
+            train_set{train_cnt} = num2str(name_id,'%05d');
             train_cnt = train_cnt + 1;
         elseif contains(get_folder,'validation')
-            valid_set{valid_cnt} = name_id ;
+            valid_set{valid_cnt} = num2str(name_id,'%05d');
             valid_cnt = valid_cnt + 1;
         elseif contains(get_folder,'test')
-            test_set{test_cnt} = name_id ;
+            test_set{test_cnt} = num2str(name_id,'%05d');
             test_cnt = test_cnt + 1;
         end
         name_id = name_id + 1;
