@@ -18,6 +18,7 @@ ImageSets_Main_path = fullfile(export_path,'ImageSets','Main');
 name_id = 1;
 countHand = 0;
 countImg = 0;
+countErr = 0;
 MainSplit = {'TRAIN','VALID','TEST'};
 for ll = 1:length(MainSplit)
     vid = getMetaBy('MainSplit', MainSplit{ll});
@@ -45,22 +46,27 @@ for ll = 1:length(MainSplit)
         end
         countHand = countHand + box_cnt;
         
-        cvt_voc_data(annotations_path,jpegimages_path,name_id,...
-                     get_folder,get_name,get_size,get_bboxs,get_image)
-        fprintf([num2str(name_id,'%05d') ' \n'])
-        name_ids{set_cnt} = num2str(name_id,'%05d');
-        set_cnt = set_cnt + 1;
-        name_id = name_id + 1;
-        
-        %%% inspect data is correct or not %%%
-%         figure(1)
-%         imshow(insertShape(get_image, ...
-%             'Rectangle', bounding_boxes, ...
-%             'Color', {'blue', 'yellow', 'red', 'green'}, ...
-%             'LineWidth', 10));
-%             disp('Press any key to move onto the next image');pause;
-            
-        countImg = countImg + 1;
+        if box_cnt > 0        
+            cvt_voc_data(annotations_path,jpegimages_path,name_id,...
+                         get_folder,get_name,get_size,get_bboxs,get_image)
+            fprintf([num2str(name_id,'%05d') ' \n'])
+            name_ids{set_cnt} = num2str(name_id,'%05d');
+            set_cnt = set_cnt + 1;
+            name_id = name_id + 1;
+
+            %%% inspect data is correct or not %%%
+%             figure(1)
+%             imshow(insertShape(get_image, ...
+%                 'Rectangle', bounding_boxes, ...
+%                 'Color', {'blue', 'yellow', 'red', 'green'}, ...
+%                 'LineWidth', 10));
+%                 disp('Press any key to move onto the next image');pause;
+
+            countImg = countImg + 1;
+        else
+            disp('No hand, skip the data');
+            countErr = countErr + 1;
+        end
     end
     end
     
@@ -68,4 +74,5 @@ for ll = 1:length(MainSplit)
         fullfile(ImageSets_Main_path,[lower(MainSplit{ll}),'.txt']) , ...
         'WriteVariableNames',0)
 end
-fprintf('\n\n   count Hand: %d\n   count Img: %d\n',countHand,countImg);
+fprintf('\n\n   count Hand: %d\n   count Img: %d   count Err: %d\n', ...
+                 countHand,         countImg,       countErr);
